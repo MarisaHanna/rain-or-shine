@@ -1,0 +1,96 @@
+body {
+
+    margin: 0 auto;
+    background: radial-gradient(circle, rgb(127, 231, 170) 0%, rgba(64, 74, 211, 0.954) 100%);
+    font-family: 'Encode Sans Condensed', sans-serif;
+}
+
+h1 {
+    margin-top: 75px;
+    margin-bottom: 35px;
+    margin-left: 20px;
+   
+    
+}
+
+.pt-1{
+
+    margin-left: 20px;
+
+}
+
+#search-city {
+
+    border-radius: 16px 0px 16px 0px;
+    box-shadow: 3px 3px 3px 3px rgba(38, 46, 160, 0.954);
+    margin-left: 20px;
+}
+
+#today {
+
+    font-size: 1rem;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+#clear-history {
+
+    
+    border-radius: 16px 0px 16px 0px;
+    box-shadow: 2px 2px 2px 2px  rgba(38, 46, 160, 0.954);
+    background-color: #ffff;
+    margin-left: 20px;
+}
+
+.input-group-append {
+
+  border: none;
+  outline: none;
+}
+
+#uv-index{
+
+    background: radial-gradient(circle, rgb(231, 183, 127) 0%, rgba(228, 120, 58, 0.954) 100%)
+}
+
+#future-weather {
+
+    margin-top: 25px;
+   
+}
+
+.col-sm-2 {
+   
+    background: radial-gradient(circle, rgb(128, 128, 128) 0%, rgba(90, 89, 89, 0.954) 100%);
+    border-radius: 16px 0px 16px 0px;
+}
+ 
+img {
+
+    height: 80px;
+    width: 80px;
+}
+
+#fImg0 {
+
+    margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 600px){
+
+#clear-history {
+
+    margin-bottom: 15px;
+}
+
+.col-sm-2 {
+   
+    border-radius: 45px 0px 45px 0px;
+
+}
+
+#fDate0, #fDate1, #fDate2, #fDate3, #fDate4 {
+
+    margin-left: 20px;
+}
+} 
