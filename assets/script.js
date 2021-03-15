@@ -87,28 +87,28 @@ function myWeather(city) {
             if (response.cod == 200) {
                 cityArray = JSON.parse(localStorage.getItem('cityname'));
             } 
-                if (cityArray == null){
-                    cityArray = [];
-                    cityArray.push(city.toUpperCase());
-                    localStorage.setItem('cityname', JSON.stringify(cityArray));
-                    cityArray.push(city);
-                }
-                     else if(find(city) > 0){
+                  if (cityArray == null){
+                       cityArray = [];
+                       cityArray.push(city.toUpperCase());
+                       localStorage.setItem('cityname', JSON.stringify(cityArray));
+                      cityArray.push(city);
+                  }
+                     else if(getCity(city) > 0){
                             cityArray.push(city.toUpperCase());
                             localStorage.setItem('cityname', JSON.stringify(cityArray));
-                            cityArray.push(city);
+                           // cityArray.push(city);
                             console.log(cityArray)
                 }
 
                
+                UVindex(response.coord.lon,response.coord.lat);
+                fiveDay(city);
+                addList(cityArray);
                 
-
-       UVindex(response.coord.lon,response.coord.lat);
-       fiveDay(city);
-       addList(text);
-            
-     });    
+    });    
 } 
+
+            
 
         
 function UVindex (ln,lt) {
@@ -189,7 +189,7 @@ function fiveDay (city){
     let temp3 = document.getElementById('fTemp3');
     temp3.textContent= ` ${Math.round(response.list[4].main.temp)}˚`
     let humid3 = document.getElementById('fHumidity3');
-    humid3.textContent = ' ' + response.list[4].main.humidity + '%';
+    humid3.textContent = '  ' + response.list[4].main.humidity + '%';
 
 
     let temp4 = document.getElementById('fTemp4');
@@ -201,38 +201,33 @@ function fiveDay (city){
     });
     
 }  
+ function showHistory(city){
+
+        let li = document.createElement('li');
+        li.textContent = city;
+        container.appendChild(li);
+        li.addEventListener('click', function (event){
+            myWeather(event.target.textContent);
+            console.log(event.target.tagName)
+            console.log(event.target.textContent)
+        });
+
+
     
+ }   
 
 
 function addList(text) {
-    
-    // for ( let i = 0; i < cityArray.length; i++){
+    console.log(text)
 
-        let li = document.createElement('li');
-        li.innerHTML = text;
-        return li;
+    text.forEach(function (city){
+        showHistory(city);
+    })
 
-       
 };
-
-    cityArray.forEach(function(li){
-        container.appendChild(li);
-    });
     
     console.log(container);
     console.log(cityArray);
-
-function pastSearch(event) {
- console.log('here')
-    let listText = event.target;
-     
-        if (event.target.matches('li')){
-            city = listText.textContent.trim();
-
-            myWeather(query);
-        }
-}
- 
 
 function resetHistory(event) {
     event.preventDefault();
@@ -245,12 +240,11 @@ function resetHistory(event) {
  }
 
   
-
     searchButton.addEventListener('click', weatherDisplay);
 
-   clearBtn.addEventListener('click', resetHistory);
+    clearBtn.addEventListener('click', resetHistory);
 
-    document.addEventListener('click', pastSearch);
+   // document.addEventListener('click', pastSearch);
 
  //window.addEventListener('load', lastCity);
 
