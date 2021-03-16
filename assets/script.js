@@ -35,7 +35,7 @@ function getCity(c){
 
  const APIkey = {  
 
-    key:'33253a1564718c43c40d46c7d21c2e09',     base:'https://api.openweathermap.org/data/2.5/'
+    key:'33253a1564718c43c40d46c7d21c2e09',  base:'https://api.openweathermap.org/data/2.5/'
 
 
  }
@@ -89,14 +89,14 @@ function myWeather(city) {
             } 
                   if (cityArray == null){
                        cityArray = [];
-                       cityArray.push(city.toUpperCase());
+                        cityArray.push(city.toUpperCase());
                        localStorage.setItem('cityname', JSON.stringify(cityArray));
-                      cityArray.push(city);
-                  }
+                       //cityArray.push(city);
+                   }
                      else if(getCity(city) > 0){
                             cityArray.push(city.toUpperCase());
                             localStorage.setItem('cityname', JSON.stringify(cityArray));
-                           // cityArray.push(city);
+                            //cityArray.push(city);
                             console.log(cityArray)
                 }
 
@@ -104,7 +104,7 @@ function myWeather(city) {
                 UVindex(response.coord.lon,response.coord.lat);
                 fiveDay(city);
                 addList(cityArray);
-                
+               
     });    
 } 
 
@@ -211,10 +211,13 @@ function fiveDay (city){
             console.log(event.target.tagName)
             console.log(event.target.textContent)
         });
+} 
 
+function saveCity() {
+ console.log(city)
+    localStorage.setItem('city', JSON.stringify(city));
 
-    
- }   
+}
 
 
 function addList(text) {
@@ -246,6 +249,6 @@ function resetHistory(event) {
 
    // document.addEventListener('click', pastSearch);
 
- //window.addEventListener('load', lastCity);
+  
 
     
