@@ -15,8 +15,8 @@ let gettingCity = JSON.parse(window.localStorage.getItem('city-list')) || [];
 let city = '';
 let cityArray = [];
 
-
-
+showHistory();
+container.append(city);
 function headerDate(){
 
     let todaysDate = moment().format('LLLL');
@@ -63,7 +63,7 @@ function myWeather(city) {
     }).then (function (response){
        console.log(response)
 
-        let nameCity = citySearch.value;
+        let nameCity = city;
           console.log(nameCity)
         let weatherIcon = response.weather[0].
         icon;
@@ -88,30 +88,18 @@ function myWeather(city) {
 
       
 
-           // if (response.cod == 200) {
-             //   nameCity = JSON.parse(localStorage.getItem('cityname'));
-            //} 
-                  //if (nameCity){
-                
-                       // nameCity.push(city.toUpperCase());
-                       let gettingCity = JSON.parse(window.localStorage.getItem('city-list')) || [];
-                       let newCityArray = gettingCity.push(nameCity);
-                       localStorage.setItem('city-list', JSON.stringify(newCityArray));
+                       gettingCity.push(nameCity);
+                     
+                       localStorage.setItem('city-list', JSON.stringify(gettingCity));
                        cityArray.push(nameCity);
-                       console.log(nameCity)
-                 //  }
-                   //  else if(getCity(city) > 0){
-                            //nameCity.push(nameCity.toUpperCase());
-                         //   localStorage.setItem('city-list', JSON.stringify(nameCity));
-                            //cityArray.push(nameCity);
-                            
-               // }
+                      
+          
 
                
                 UVindex(response.coord.lon,response.coord.lat);
                 fiveDay(city);
             
-               showHistory(city);
+               showHistory();
             
                
     });    
@@ -138,13 +126,13 @@ function fiveDay (city){
     .then(forecast => {
         return forecast.json();
     }).then (function (response){
-        console.log(response)
+       
 
     let day1 = moment().add(1, 'day' ).format('l');
     let day2 = moment().add(2,'day' ).format('l');
     let day3 = moment().add(3, 'day').format('l');
     let day4 = moment().add(4, 'day').format('l');
-    let  day5 = moment().add(5, 'day').format('l');
+    let day5 = moment().add(5, 'day').format('l');
 
          let date0 = document.getElementById('fDate0');
         date0.innerHTML = day1;
@@ -217,7 +205,9 @@ function fiveDay (city){
     });
     
 }  
- function showHistory(city){
+ function showHistory(){
+
+    container.innerHTML = '';
 
     for(var i = 0; i < gettingCity.length; i++)
     {
@@ -225,109 +215,31 @@ function fiveDay (city){
         li.textContent = gettingCity[i];
         container.appendChild(li);
         li.addEventListener('click', function (event){
+            event.stopPropagation();
             myWeather(event.target.textContent);
-            console.log(event.target.tagName)
-            console.log(event.target.textContent)
+       
             
         });
 
     }
 
     
-     
-    } 
-    container.append(city);
-    //  function saveCity() {
-        //   console.log(cityArray)
-        
-        //      localStorage.setItem('city', JSON.stringify(cityArray));
-        
-        //  }  
-        
-function setItems () {
-           
-
-        let yourCity = city;
-        localStorage.setItem('city', yourCity);
-    }
-
-
-    function init (){
-        let savedCity = localStorage.getItem('savedCity', JSON.stringify(saveCity));
-
-        if (saveCity) {
-            city = savedCity;
-        }
-        container.innerHTML = savedCity;
-    
-        //setItems();
-    }
-
-//  function getItems () {  
-
-         
-//             let myCity = JSON.parse(localStorage.getItem('cityname'));
-           
-//            if (myCity !== null){
-//                myCity = JSON.parse(window.localStorage.getItem('cityname', JSON.stringify(myCity)));
-//                for (i = 0; i < myCity.lenght; i++) {
-//                    myCity.push(myCity[i]);
-                   
-            
-//                }
-//                city.cityname = myCity [i - 1];
-                        
-//             let myCity = JSON.parse(localStorage.getItem('cityname'));
-           
-//             if (myCity !== null){
-//                 myCity = JSON.parse(window.localStorage.getItem('cityname', JSON.stringify(myCity)));
-//                 for (i = 0; i < myCity.lenght; i++) {
-//                     myCity.push(myCity[i]);
-                    
-             
-//                 }
-//                 city.cityname = myCity [i - 1];
-//                  container.innerHTML = myCity;
-//          }
- 
-//   }
-//         }
-
-//  }
-
-
-
-
-
-// function addList(text) {
-//     console.log(text)
-
-//     text.forEach(function (city){
-//         showHistory(city);
-//     })
-
-// };
-    
-    console.log(container);
-    console.log(cityArray);
+ } 
+   
 
 function resetHistory(event) {
     event.preventDefault();
 
-    cityArray = [];
-
-    localStorage.removeItem('cityname');
+   localStorage.clear();
 
     document.location.reload();
  }
-
-
 
     searchButton.addEventListener('click', weatherDisplay);
 
     clearBtn.addEventListener('click', resetHistory);
 
-    window.addEventListener('load', init);
+
 
   
 
