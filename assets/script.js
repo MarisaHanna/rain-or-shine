@@ -10,10 +10,11 @@ let humidity = document.getElementById('humidity');
 let clearBtn = document.getElementById('clear-history');
 let today = document.getElementById('today');
 let daySearched = document.getElementById('day');
-let day = new Date();
-let days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+let setCity = citySearch.value;
+let gettingCity = JSON.parse(window.localStorage.getItem('city-list')) || [];
 let city = '';
 let cityArray = [];
+
 
 
 function headerDate(){
@@ -29,10 +30,11 @@ function getCity(c){
         if(c.toUpperCase()=== cityArray[i]){
             return -1;
         }
-    }
+    }console.log(cityArray)
       return 1;
+     
 }
-
+console.log(getCity)
  const APIkey = {  
 
     key:'33253a1564718c43c40d46c7d21c2e09',  base:'https://api.openweathermap.org/data/2.5/'
@@ -46,9 +48,9 @@ function weatherDisplay(event) {
 
     if (citySearch.value.trim('')) {
         city = citySearch.value.trim('');
-
-        myWeather(city);
-        fiveDay(city);
+        console.log(city)
+         myWeather(city);
+         fiveDay(city);
 
     }
 }
@@ -60,7 +62,9 @@ function myWeather(city) {
     return weather.json();
     }).then (function (response){
        console.log(response)
-          
+
+        let nameCity = citySearch.value;
+          console.log(nameCity)
         let weatherIcon = response.weather[0].
         icon;
         console.log(weatherIcon)
@@ -84,31 +88,36 @@ function myWeather(city) {
 
       
 
-            if (response.cod == 200) {
-                cityArray = JSON.parse(localStorage.getItem('cityname'));
-            } 
-                  if (cityArray == null){
-                       cityArray = [];
-                        cityArray.push(city.toUpperCase());
-                       localStorage.setItem('cityname', JSON.stringify(cityArray));
-                       //cityArray.push(city);
-                   }
-                     else if(getCity(city) > 0){
-                            cityArray.push(city.toUpperCase());
-                            localStorage.setItem('cityname', JSON.stringify(cityArray));
-                            //cityArray.push(city);
-                            console.log(cityArray)
-                }
+           // if (response.cod == 200) {
+             //   nameCity = JSON.parse(localStorage.getItem('cityname'));
+            //} 
+                  //if (nameCity){
+                
+                       // nameCity.push(city.toUpperCase());
+                       let gettingCity = JSON.parse(window.localStorage.getItem('city-list')) || [];
+                       let newCityArray = gettingCity.push(nameCity);
+                       localStorage.setItem('city-list', JSON.stringify(newCityArray));
+                       cityArray.push(nameCity);
+                       console.log(nameCity)
+                 //  }
+                   //  else if(getCity(city) > 0){
+                            //nameCity.push(nameCity.toUpperCase());
+                         //   localStorage.setItem('city-list', JSON.stringify(nameCity));
+                            //cityArray.push(nameCity);
+                            
+               // }
 
                
                 UVindex(response.coord.lon,response.coord.lat);
                 fiveDay(city);
-                addList(cityArray);
+            
+               showHistory(city);
+            
                
     });    
 } 
 
-            
+           
 
         
 function UVindex (ln,lt) {
@@ -131,21 +140,28 @@ function fiveDay (city){
     }).then (function (response){
         console.log(response)
 
+    let day1 = moment().add(1, 'day' ).format('l');
+    let day2 = moment().add(2,'day' ).format('l');
+    let day3 = moment().add(3, 'day').format('l');
+    let day4 = moment().add(4, 'day').format('l');
+    let  day5 = moment().add(5, 'day').format('l');
 
-    let date0 = document.getElementById('fDate0');
-    date0.innerHTML = days[day.getDay()+ 1];
+         let date0 = document.getElementById('fDate0');
+        date0.innerHTML = day1;
     
-    let date1 = document.getElementById('fDate1');
-    date1.innerHTML = days[day.getDay()+ 2];
+        let date1 = document.getElementById('fDate1');
+        date1.innerHTML = day2;
     
-    let date2 = document.getElementById('fDate2');
-    date2.innerHTML = days[day.getDay()+ 3];
+        let date2 = document.getElementById('fDate2');
+        date2.innerHTML = day3;
 
-    let date3 = document.getElementById('fDate3');
-    date3.innerHTML = days[day.getDay()+ 4];
+        let date3 = document.getElementById('fDate3');
+        date3.innerHTML = day4
 
-    let date4 = document.getElementById('fDate4');
-    date4.innerHTML = days[day.getDay()+ 5];
+        let date4 = document.getElementById('fDate4');
+         date4.innerHTML = day5;
+    
+
 
     let icon0 = response.list[1].weather[0].icon;
     let image0 = document.getElementById('fImg0');
@@ -203,31 +219,94 @@ function fiveDay (city){
 }  
  function showHistory(city){
 
+    for(var i = 0; i < gettingCity.length; i++)
+    {
         let li = document.createElement('li');
-        li.textContent = city;
+        li.textContent = gettingCity[i];
         container.appendChild(li);
         li.addEventListener('click', function (event){
             myWeather(event.target.textContent);
             console.log(event.target.tagName)
             console.log(event.target.textContent)
+            
         });
-} 
 
-function saveCity() {
- console.log(city)
-    localStorage.setItem('city', JSON.stringify(city));
+    }
 
-}
+    
+     
+    } 
+    container.append(city);
+    //  function saveCity() {
+        //   console.log(cityArray)
+        
+        //      localStorage.setItem('city', JSON.stringify(cityArray));
+        
+        //  }  
+        
+function setItems () {
+           
+
+        let yourCity = city;
+        localStorage.setItem('city', yourCity);
+    }
 
 
-function addList(text) {
-    console.log(text)
+    function init (){
+        let savedCity = localStorage.getItem('savedCity', JSON.stringify(saveCity));
 
-    text.forEach(function (city){
-        showHistory(city);
-    })
+        if (saveCity) {
+            city = savedCity;
+        }
+        container.innerHTML = savedCity;
+    
+        //setItems();
+    }
 
-};
+//  function getItems () {  
+
+         
+//             let myCity = JSON.parse(localStorage.getItem('cityname'));
+           
+//            if (myCity !== null){
+//                myCity = JSON.parse(window.localStorage.getItem('cityname', JSON.stringify(myCity)));
+//                for (i = 0; i < myCity.lenght; i++) {
+//                    myCity.push(myCity[i]);
+                   
+            
+//                }
+//                city.cityname = myCity [i - 1];
+                        
+//             let myCity = JSON.parse(localStorage.getItem('cityname'));
+           
+//             if (myCity !== null){
+//                 myCity = JSON.parse(window.localStorage.getItem('cityname', JSON.stringify(myCity)));
+//                 for (i = 0; i < myCity.lenght; i++) {
+//                     myCity.push(myCity[i]);
+                    
+             
+//                 }
+//                 city.cityname = myCity [i - 1];
+//                  container.innerHTML = myCity;
+//          }
+ 
+//   }
+//         }
+
+//  }
+
+
+
+
+
+// function addList(text) {
+//     console.log(text)
+
+//     text.forEach(function (city){
+//         showHistory(city);
+//     })
+
+// };
     
     console.log(container);
     console.log(cityArray);
@@ -242,12 +321,13 @@ function resetHistory(event) {
     document.location.reload();
  }
 
-  
+
+
     searchButton.addEventListener('click', weatherDisplay);
 
     clearBtn.addEventListener('click', resetHistory);
 
-   // document.addEventListener('click', pastSearch);
+    window.addEventListener('load', init);
 
   
 
